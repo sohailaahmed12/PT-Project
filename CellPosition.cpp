@@ -1,7 +1,5 @@
 #include "CellPosition.h"
 #include "UI_Info.h"
-testest
-
 
 CellPosition::CellPosition () 
 {
@@ -64,17 +62,17 @@ int CellPosition::HCell() const
 
 bool CellPosition::IsValidCell() const 
 {
-	if (vCell < 0 || vCell >= 5)
+	if (vCell < 0 || vCell >= NumVerticalCells)
 	{
 		return false;
 	}
-	if (hCell < 0 || hCell >= 11)
+	if (hCell < 0 || hCell >= NumHorizontalCells)
 	{
 		return false;
 	}
 	///TODO: Implement this function as described in the .h file
 
-	return false; // this line sould be changed with your implementation
+	return true; // this line sould be changed with your implementation
 }
 
 int CellPosition::GetCellNum() const
@@ -86,16 +84,16 @@ int CellPosition::GetCellNum() const
 int CellPosition::GetCellNumFromPosition(const CellPosition & cellPosition)
 {
 	
-	if (cellPosition.vCell < 0 || cellPosition.vCell >= 5)
+	if (cellPosition.VCell() < 0 || cellPosition.VCell() > NumVerticalCells)
 	{
 		return -1;
 	}
-	if (cellPosition.hCell < 0 || cellPosition.hCell >= 10)
+	if (cellPosition.HCell() < 0 || cellPosition.HCell() > NumHorizontalCells)
 	{
 		return -1;
 	}
 	int cellnumber;
-		cellnumber = (11 * (5 - cellPosition.vCell - 1) + (cellPosition.hCell + 1));
+		cellnumber = (NumHorizontalCells * (NumVerticalCells - cellPosition.VCell() - 1) + (cellPosition.HCell() + 1));
 		return cellnumber;
 }
 
@@ -104,15 +102,13 @@ CellPosition CellPosition::GetCellPositionFromNum(int cellNum)
 	CellPosition position;
 	if (cellNum >= 0 && cellNum <= 55)
 	{
-		position.vCell = 5 - 1 - (cellNum - 1) / 11;
-		position.hCell = (cellNum - 1) % 11;
+		position.hCell = NumVerticalCells - 1 - (cellNum - 1) / NumHorizontalCells;
+		position.vCell = (cellNum - 1) % NumHorizontalCells;
 		return position;
 	}
-	else
-	{
-		return (-1, -1);
+	else {
+		return position;
 	}
-	
 }
 
 void CellPosition::AddCellNum(int addedNum, Direction direction)
@@ -146,12 +142,5 @@ void CellPosition::AddCellNum(int addedNum, Direction direction)
 			hCell = currentposition.HCell();
 		}
 		
-		 
-	
-	
-	
-
-
-	// Note: this function updates the data members (vCell and hCell) of the calling object
 
 }
