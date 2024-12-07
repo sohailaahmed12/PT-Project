@@ -84,11 +84,11 @@ int CellPosition::GetCellNum() const
 int CellPosition::GetCellNumFromPosition(const CellPosition & cellPosition)
 {
 	
-	if (cellPosition.VCell() < 0 || cellPosition.VCell() > NumVerticalCells)
+	if (cellPosition.VCell() < 0 || cellPosition.VCell() >= NumVerticalCells)
 	{
 		return -1;
 	}
-	if (cellPosition.HCell() < 0 || cellPosition.HCell() > NumHorizontalCells)
+	if (cellPosition.HCell() < 0 || cellPosition.HCell() >= NumHorizontalCells)
 	{
 		return -1;
 	}
