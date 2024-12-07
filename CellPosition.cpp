@@ -100,10 +100,12 @@ int CellPosition::GetCellNumFromPosition(const CellPosition & cellPosition)
 CellPosition CellPosition::GetCellPositionFromNum(int cellNum)
 {
 	CellPosition position;
-	if (cellNum >= 0 && cellNum <= 55)
+	if (cellNum >= 1 && cellNum <= 55)
 	{
-		position.hCell = NumVerticalCells - 1 - (cellNum - 1) / NumHorizontalCells;
-		position.vCell = (cellNum - 1) % NumHorizontalCells;
+		int vertical = (NumVerticalCells - 1) - ((cellNum - 1) / NumHorizontalCells);
+		int horizontal= (cellNum - 1) % NumHorizontalCells;
+		position.SetVCell(vertical);
+		position.SetHCell(horizontal);
 		return position;
 	}
 	else {
@@ -118,29 +120,49 @@ void CellPosition::AddCellNum(int addedNum, Direction direction)
 		return;
 	}
 		int currentcellnum = GetCellNum();  //currentcellnum k2enaha cellnumber
+		int currentvcell = VCell();
+		int currenthcell = HCell();
 		if (direction == UP)
 		{
-			currentcellnum = currentcellnum + (addedNum * 11);
+			if (currentvcell- addedNum < 0)
+			{
+				return;  
+			}
+			currentcellnum = currentcellnum + (addedNum * NumHorizontalCells);
 		}
 		else if (direction == DOWN)
 		{
-			currentcellnum = currentcellnum - (addedNum * 11);
+			if (currentvcell + addedNum > 4)  
+			{
+				return;  
+			}
+			currentcellnum = currentcellnum - (addedNum * NumHorizontalCells);
 		}
 		else if (direction == LEFT)
 		{
+			if (currenthcell - addedNum < 0)
+			{
+				return;  
+			}
 			currentcellnum = currentcellnum - addedNum;
 		}
 		else if (direction == RIGHT)
 		{
+			if (currenthcell + addedNum > 10)
+			{
+				return;  // Can't move right beyond the last column (column 10)
+			}
 			currentcellnum = currentcellnum + addedNum;
 		}
 		else return;
-		if (currentcellnum >= 0 && currentcellnum<=55)
+
+		if (currentcellnum >= 1 && currentcellnum<=55)
 		{
 			CellPosition currentposition=GetCellPositionFromNum(currentcellnum);
-			vCell = currentposition.VCell();
-			hCell = currentposition.HCell();
+			 SetVCell(currentposition.VCell());
+			 SetHCell(currentposition.HCell());
 		}
 		
+	// Note: this function updates the data members (vCell and hCell) of the calling object
 
 }
